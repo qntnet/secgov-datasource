@@ -97,6 +97,8 @@ def parse_raw_one(fd):
 
 
 def update_indexes():
+    os.makedirs(PARSED_DIR, exist_ok=True)
+
     global_index = []
     for i in os.listdir(PARSED_DIR):
         if os.path.isfile(os.path.join(PARSED_DIR, i)):
