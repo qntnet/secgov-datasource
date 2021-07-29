@@ -148,6 +148,6 @@ def update_indexes():
 
 
 if __name__ == '__main__':
-    update_indexes()
+    #update_indexes()
     update()
     update_indexes()
