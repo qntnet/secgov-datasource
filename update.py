@@ -13,7 +13,7 @@ from secgov_api import load_report_list, get_xbrl_link
 logger = logging.getLogger(__name__)
 
 
-def update(limit=sys.maxsize, process_count=8):
+def update(limit=sys.maxsize, process_count=1):
     os.makedirs(PARSED_DIR, exist_ok=True)
     os.makedirs(RAW_DIR, exist_ok=True)
 
