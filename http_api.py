@@ -8,7 +8,7 @@ import logging
 import shutil
 import io
 
-from config import PROXY, ERROR_DELAY, DEBUG
+from config import PROXY, ERROR_DELAY, DEBUG, DELAY, ERROR_403_DELAY
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +22,7 @@ def load_with_retry(url, use_gzip=True):
     while True:
         log("request", url)
         try:
+            time.sleep(DELAY)
             if use_gzip == True:
                 opener.addheaders = [("Accept-Encoding", "gzip")]
             urllib.request.install_opener(opener)
@@ -35,6 +36,9 @@ def load_with_retry(url, use_gzip=True):
         except urllib.error.HTTPError as err:
             if err.code == 404:
                 return ''
+            elif err.code == 403:
+                logger.exception("rate limit")
+                time.sleep(ERROR_403_DELAY)
             else:
                 logger.exception("unexpected")
                 time.sleep(ERROR_DELAY)
