@@ -7,7 +7,7 @@ PROXY = os.getenv('PROXY')
 
 logging.basicConfig(level=logging.INFO)
 
-ERROR_DELAY = 10
+ERROR_DELAY = 60
 
 DEBUG = os.getenv("DEBUG", 'false').lower() == 'true'
 
