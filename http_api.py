@@ -24,7 +24,7 @@ def load_with_retry(url, use_gzip=True):
         try:
             time.sleep(DELAY)
             if use_gzip == True:
-                opener.addheaders = [("Accept-Encoding", "gzip")]
+                opener.addheaders = [("Accept-Encoding", "gzip"), ("User-Agent", "QuantNet (info@quantnet.ai)")]
             urllib.request.install_opener(opener)
             response = urllib.request.urlopen(url, timeout=10)
             body = response.read()
