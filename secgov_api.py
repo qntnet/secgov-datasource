@@ -48,7 +48,7 @@ def list_dirs():
         quater_idx = load_with_retry(FULL_INDEX_URL + year + '/index.xml')
         quater_idx = pyquery.PyQuery(quater_idx)
         quater_idx = quater_idx('item name[type=dir]')
-        quater_idx = [fid.text for fid in quater_idx]
+        quater_idx = [fid.text for fid in quater_idx if 'temp' not in fid.text.lower()]
         for quarter in quater_idx:
             print(quarter)
             yield (year, quarter)
