@@ -10,10 +10,10 @@ RUN apt update && apt -y install curl bzip2 openssh-client \
     && apt -y autoremove \
     && apt autoclean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log \
-    && conda clean -tipsy && conda clean --all --yes
+    && conda clean -afy
 
 RUN conda install -y python=3.7 flask=1.1.2 pyquery=1.4.0 portalocker=1.5 lxml=4.5.2 gunicorn=20.0 defusedxml=0.6.0 \
-     && conda clean -tipsy && conda clean --all --yes
+     && conda clean -afy
 
 COPY . /opt/
 
