@@ -1,4 +1,4 @@
-FROM debian:9.5
+FROM debian:10
 # registry.quantnet-ai.ru/quantnet/secgov:dev
 
 RUN apt update && apt -y install curl bzip2 openssh-client \
