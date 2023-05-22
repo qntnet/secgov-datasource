@@ -11,10 +11,10 @@ ALLOWED_SCHEMES = {
     r'http://www\.xbrl\.org/\d{4}/linkbase': 'xbrll',
     r'http://xbrl\.org/\d{4}/xbrldi':'xbrldi',
 
-    r"http://fasb\.org/us-gaap/\d{4}-\d{2}-\d{2}": 'us-gaap',
+    r"http://fasb\.org/us-gaap/\d{4}(\-\d{2}-\d{2})?": 'us-gaap',
     r'http://xbrl\.us/us-gaap/\d{4}-\d{2}-\d{2}': 'us-gaap',
 
-    r'http://xbrl\.sec\.gov/dei/\d{4}-\d{2}-\d{2}': 'dei',
+    r'http://xbrl\.sec\.gov/dei/\d{4}(\-\d{2}-\d{2})?': 'dei',
     r'http://xbrl\.us/dei/\d{4}-\d{2}-\d{2}': 'dei',
 
     r'http://fasb\.org/srt/\d{4}-\d{2}-\d{2}': 'srt',
@@ -59,6 +59,7 @@ def parse_form(raw, name=""):
         """
         return None
     replaced_schemes = dict()
+    unmatched_schemes = set()
 
     def key_filter(key):
         if ':' not in key:
@@ -68,6 +69,8 @@ def parse_form(raw, name=""):
         key = pk[-1]
 
         mapped_schema = next((ALLOWED_SCHEMES[s] for s in ALLOWED_SCHEMES if re.match(s, schema)), None)
+        if not mapped_schema:
+            unmatched_schemes.add(schema)
 
         if mapped_schema is not None and mapped_schema not in replaced_schemes:
             replaced_schemes[mapped_schema] = schema
@@ -78,6 +81,9 @@ def parse_form(raw, name=""):
 
     filtered_report = key_map(report, key_filter)
     facts = extract_facts(filtered_report)
+
+    if len(unmatched_schemes) > 0:
+        print("INFO: Not matched schemes: ", unmatched_schemes)
     return {
         "schemes": replaced_schemes,
         "facts": facts
@@ -223,6 +229,7 @@ def extract_segment(ctx):
                 if child['attrib'].get('xsi:nil') == 'true':
                     child = None
             except:
+                print("INFO: Possible schema change")
                 child = None
 
             ss.append({'type': 'typed', 'dimension':dim, 'value': child})
