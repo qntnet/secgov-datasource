@@ -224,12 +224,8 @@ def extract_segment(ctx):
             ss.append({'type': 'explicit', 'dimension':s['attrib']['dimension'], 'value': v.strip()})
         elif s['tag'] == 'xbrldi:typedMember':
             dim = s['attrib']['dimension']
-            try:
-                child = s['children'][0]
-                if child['attrib'].get('xsi:nil') == 'true':
-                    child = None
-            except:
-                print("INFO: Possible schema change")
+            child = s['children'][0]
+            if child['attrib'].get('xsi:nil') == 'true':
                 child = None
 
             ss.append({'type': 'typed', 'dimension':dim, 'value': child})
