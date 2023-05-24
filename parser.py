@@ -79,11 +79,12 @@ def parse_form(raw, name=""):
 
         return mapped_key
 
+    if len(unmatched_schemes) > 0:
+        print("INFO: Not matched schemes: ", unmatched_schemes)
+
     filtered_report = key_map(report, key_filter)
     facts = extract_facts(filtered_report)
 
-    if len(unmatched_schemes) > 0:
-        print("INFO: Not matched schemes: ", unmatched_schemes)
     return {
         "schemes": replaced_schemes,
         "facts": facts
