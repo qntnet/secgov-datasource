@@ -48,8 +48,11 @@ def list_dirs():
         quater_idx = load_with_retry(FULL_INDEX_URL + year + '/index.xml')
         quater_idx = pyquery.PyQuery(quater_idx)
         quater_idx = quater_idx('item name[type=dir]')
-        quater_idx = [fid.text for fid in quater_idx if 'temp' not in fid.text.lower()]
+        quater_idx = [fid.text for fid in quater_idx]
         for quarter in quater_idx:
+            if quarter.lower() not in ["qtr1", "qtr2", "qtr3", "qtr4"]:
+                print("SKIP: Ineligible quarter: ", quarter)
+                continue
             print(quarter)
             yield (year, quarter)
 
